@@ -1,0 +1,31 @@
+CONSULTA 2 - Filtrado productos (outputMode=append)
+============================================================
+   usuario    producto
+awalther-2        book
+  eabara-2    t-shirts
+  jsmith-2 alarm clock
+  jsmith-2        book
+jbernard-2        book
+  eabara-2        book
+  jsmith-2 alarm clock
+jbernard-2 alarm clock
+ sgarcia-2        book
+ sgarcia-2    t-shirts
+  jsmith-2 alarm clock
+ sgarcia-2        book
+  eabara-2    t-shirts
+ sgarcia-2        book
+ htanaka-2        book
+jbernard-2        book
+ htanaka-2    t-shirts
+  jsmith-2        book
+  eabara-2 alarm clock
+ sgarcia-2        book
+  jsmith-2        book
+jbernard-2    t-shirts
+jbernard-2    t-shirts
+  jsmith-2    t-shirts
+ sgarcia-2 alarm clock
+awalther-2    t-shirts
+awalther-2        book
+ htanaka-2 alarm clock

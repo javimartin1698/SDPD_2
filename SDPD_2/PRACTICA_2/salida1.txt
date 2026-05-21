@@ -1,0 +1,8 @@
+CONSULTA 1 - Conteo de compras por producto (outputMode=complete)
+============================================================
+      value  total
+       book     13
+  batteries      9
+   t-shirts      8
+alarm clock      7
+  gift card      3

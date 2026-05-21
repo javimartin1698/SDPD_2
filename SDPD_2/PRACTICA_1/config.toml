@@ -1,0 +1,9 @@
+[paths]
+source_url = "https://raw.githubusercontent.com/Lara-004/SDPD2/refs/heads/main/reviews.csv"
+raw_data = "reviews.csv"
+clean_data = "reviews_clean.csv"
+transformed_data = "reviews_transformed.csv"
+
+[kafka]
+bootstrap_servers = "localhost:9092"
+topic = "reviews_clean"

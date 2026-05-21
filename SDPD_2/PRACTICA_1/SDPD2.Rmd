@@ -1,0 +1,120 @@
+---
+title: "SDPD-2"
+output: html_document
+date: "2026-03-20"
+---
+
+```{r}
+library(readr)
+library(dplyr)
+
+# Leer datos
+df <- read_csv("C:/Users/Javi/Downloads/reviews.csv", show_col_types = FALSE)
+
+# Quitar duplicados por id
+df <- df %>% distinct(id, .keep_all = TRUE)
+
+# Eliminar filas con NA reales
+df <- df %>% filter(complete.cases(.))
+
+# Eliminar filas completamente duplicadas
+df <- df %>% distinct()
+
+# Limpiar espacios en texto
+df <- df %>%
+  mutate(
+    reviewer_name = trimws(reviewer_name),
+    comments = trimws(comments),
+    comments = gsub("[\r\n]+", " ", comments),
+    comments = gsub("\\s+", " ", comments)
+  )
+
+# Convertir IDs a character para evitar overflow
+df <- df %>%
+  mutate(
+    listing_id = as.character(listing_id),
+    id = as.character(id),
+    reviewer_id = as.character(reviewer_id),
+    reviewer_name = as.character(reviewer_name),
+    comments = as.character(comments),
+    date = as.Date(date)
+  )
+
+# Comprobaciones finales
+sum(is.na(df))
+sum(duplicated(df$id))
+sum(duplicated(df))
+str(df)
+dim(df)
+```
+```{r}
+library(dplyr)
+library(ggplot2)
+
+# Crear variables auxiliares para visualizar
+df_plot <- df %>%
+  mutate(
+    date = as.Date(date),
+    comment_length = nchar(comments)
+  )
+
+# 1. Reviews por fecha
+ggplot(df_plot, aes(x = date)) +
+  geom_histogram(bins = 40) +
+  labs(
+    title = "Distribución temporal de las reviews",
+    x = "Fecha",
+    y = "Número de reviews"
+  ) +
+  theme_minimal()
+
+# 2. Longitud de los comentarios
+ggplot(df_plot, aes(x = comment_length)) +
+  geom_histogram(bins = 50) +
+  labs(
+    title = "Distribución de la longitud de los comentarios",
+    x = "Número de caracteres",
+    y = "Frecuencia"
+  ) +
+  theme_minimal()
+
+# 3. Top 10 listings con más reviews
+top_listings <- df_plot %>%
+  count(listing_id, sort = TRUE) %>%
+  slice_head(n = 10)
+
+ggplot(top_listings, aes(x = reorder(listing_id, n), y = n)) +
+  geom_col() +
+  coord_flip() +
+  labs(
+    title = "Top 10 listings con más reviews",
+    x = "Listing ID",
+    y = "Número de reviews"
+  ) +
+  theme_minimal()
+
+# 4. Top 10 reviewers más activos
+top_reviewers <- df_plot %>%
+  count(reviewer_id, reviewer_name, sort = TRUE) %>%
+  slice_head(n = 10)
+
+ggplot(top_reviewers, aes(x = reorder(reviewer_name, n), y = n)) +
+  geom_col() +
+  coord_flip() +
+  labs(
+    title = "Top 10 reviewers más activos",
+    x = "Reviewer",
+    y = "Número de reviews"
+  ) +
+  theme_minimal()
+
+# 5. Boxplot de longitud de comentarios
+ggplot(df_plot, aes(y = comment_length)) +
+  geom_boxplot() +
+  labs(
+    title = "Boxplot de la longitud de los comentarios",
+    y = "Número de caracteres"
+  ) +
+  theme_minimal()
+```
+
